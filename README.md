@@ -14,8 +14,9 @@ python3 collatz_tree.py --depth 10 -o collatz_tree.dot
 ```
 
 The depth option controls how many trunk nodes of the form `1 * 2^x` are
-included. Branches are automatically added from each trunk node to its
-corresponding `1 * (2^(2x))` value.
+included. Branches are only added from trunk nodes where `x` is even and at
+least `4` (starting with `16`). These branches connect to the value
+`1 * (2^(2x))` and are drawn horizontally to form right angles with the trunk.
 
 To render the resulting DOT file to an image you need Graphviz installed. For
 example:
