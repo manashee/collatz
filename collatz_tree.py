@@ -11,7 +11,12 @@ import argparse
 
 
 def generate_collatz_tree(max_depth: int) -> str:
-    """Return a DOT representation for the Collatz tree up to ``2**max_depth``."""
+    """Return a DOT representation for the Collatz tree up to ``2**max_depth``.
+
+    Branches are only added from trunk nodes where the exponent is even and at
+    least four (e.g. from 16, 64, 256, ...). Each branch points horizontally
+    toward its trunk node so that the edge forms a right angle with the trunk.
+    """
     lines = [
         "digraph CollatzTree {",
         "    graph [splines=line]",  # keep edges straight
@@ -28,11 +33,11 @@ def generate_collatz_tree(max_depth: int) -> str:
             # Edge direction toward 1
             lines.append(f'    "{node_val}" -> "{parent}"')
 
-    # Branches at right angles from trunk nodes
-    for x in range(1, max_depth + 1):
+    # Branches at right angles from trunk nodes with even exponent >= 4
+    for x in range(4, max_depth + 1, 2):
         trunk_val = 2 ** x
         branch_val = 2 ** (2 * x)
-        # Place branch horizontally to the right of the trunk
+        # Place branch horizontally to the right of the trunk at the same y
         lines.append(f'    "{branch_val}" [pos="{x},{x}!" label="{branch_val}"]')
         # Edge directed toward the trunk
         lines.append(f'    "{branch_val}" -> "{trunk_val}"')
